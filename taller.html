@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>BoardTo - Dashboard Boardto</title>
+
+  <!-- Tailwind CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Iconos Lucide -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <style>
+    *{
+      box-sizing:border-box;
+    }
+
+    body{
+      margin:0;
+      min-height:100vh;
+      font-family:Arial,Helvetica,sans-serif;
+      background:#f4f6f8;
+      color:#172033;
+      overflow-x:hidden;
+    }
+
+    button{
+      cursor:pointer;
+    }
+
+    .sidebar-item{
+      width:100%;
+      height:46px;
+      display:flex;
+      align-items:center;
+      gap:12px;
+      padding:0 16px;
+      border-radius:12px;
+      color:#697386;
+      transition:.2s ease;
+    }
+
+    .sidebar-item:hover{
+      background:#f2f5ff;
+      color:#315efb;
+    }
+
+    .sidebar-item.active{
+      background:#315efb;
+      color:white;
+      box-shadow:0 8px 22px rgba(49,94,251,.24);
+    }
+
+    .stat-card{
+      background:#fff;
+      border:1px solid #e8ebf0;
+      border-radius:18px;
+      padding:18px;
+      min-height:125px;
+    }
+
+    .stat-icon{
+      width:44px;
+      height:44px;
+      border-radius:12px;
+      display:grid;
+      place-items:center;
+    }
+
+    .panel{
+      background:#fff;
+      border:1px solid #e8ebf0;
+      border-radius:18px;
+    }
+
+    .status{
+      display:inline-flex;
+      align-items:center;
+      padding:5px 10px;
+      border-radius:999px;
+      font-size:12px;
+      font-weight:600;
+    }
+
+    .status-green{
+      color:#138a52;
+      background:#e9f8ef;
+    }
+
+    .status-orange{
+      color:#b26b08;
+      background:#fff4dc;
+    }
+
+    .status-red{
+      color:#c93a48;
+      background:#fdebed;
+    }
+
+    .status-blue{
+      color:#315efb;
+      background:#edf2ff;
+    }
+
+    .progress-track{
+      height:8px;
+      width:100%;
+      background:#edf0f4;
+      border-radius:999px;
+      overflow:hidden;
+    }
+
+    .progress-fill{
+      height:100%;
+      border-radius:999px;
+    }
+
+    .table-row:hover{
+      background:#fafbfc;
+    }
+
+    @media(max-width:980px){
+      .app{
+        grid-template-columns:80px minmax(0,1fr)!important;
+      }
+
+      .sidebar-text,
+      .logo-text,
+      .section-title,
+      .profile-text{
+        display:none;
+      }
+
+      .sidebar-item{
+        justify-content:center;
+        padding:0;
+      }
+
+      .summary-grid{
+        grid-template-columns:repeat(2,minmax(0,1fr))!important;
+      }
+
+      .content-grid{
+        grid-template-columns:1fr!important;
+      }
+    }
+
+    @media(max-width:640px){
+      .app{
+        grid-template-columns:1fr!important;
+      }
+
+      .sidebar{
+        display:none!important;
+      }
+
+      .summary-grid{
+        grid-template-columns:1fr!important;
+      }
+
+      .topbar{
+        flex-wrap:wrap;
+      }
+
+      .search-box{
+        order:3;
+        width:100%!important;
+        max-width:none!important;
+      }
+
+      .page-actions{
+        width:100%;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="app min-h-screen grid" style="grid-template-columns:230px minmax(0,1fr);">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar bg-white border-r border-[#e8ebf0] p-4 flex flex-col min-h-screen">
+
+    <div class="h-14 flex items-center gap-3 px-2 mb-5">
+      
+      <div class="logo-text">
+        <h1 class="font-bold text-xl leading-5">BoardTo</h1>
+              </div>
+    </div>
+
+<button class="sidebar-item" data-page="Boards">
+        <i data-lucide="boxes" class="w-5 h-5 shrink-0"></i>
+        <span class="sidebar-text text-sm font-semibold">Boards</span>
+      </button>
+
+      <button class="sidebar-item" data-page="Plan Schedule">
+        <i data-lucide="tags" class="w-5 h-5 shrink-0"></i>
+        <span class="sidebar-text text-sm font-semibold">Plan schedule</span>
+      </button>
+
+      <nav class="space-y-2">
+      <button class="sidebar-item active" data-page="Reporting">
+        <i data-lucide="layout-dashboard" class="w-5 h-5 shrink-0"></i>
+        <span class="sidebar-text text-sm font-semibold">Reporting</span>
+      </button>
+
+      <button class="sidebar-item" data-page="Messages">
+        <i data-lucide="arrow-left-right" class="w-5 h-5 shrink-0"></i>
+        <span class="sidebar-text text-sm font-semibold">Messages</span>
+      </button>
+
+      <button class="sidebar-item" data-page="Team Member">
+        <i data-lucide="bar-chart-3" class="w-5 h-5 shrink-0"></i>
+        <span class="sidebar-text text-sm font-semibold">Team Member</span>
+      </button>
+    </nav>
+
+    <nav class="space-y-2">
+      <button class="sidebar-item">
+        <i data-lucide="settings" class="w-5 h-5 shrink-0"></i>
+        <span class="sidebar-text text-sm font-semibold">Tools Pluglin</span>
+      </button>
+
+      <button class="sidebar-item">
+        <i data-lucide="circle-help" class="w-5 h-5 shrink-0"></i>
+        <span class="sidebar-text text-sm font-semibold">Roadmap</span>
+      </button>
+
+      <button class="sidebar-item">
+        <i data-lucide="circle-help" class="w-5 h-5 shrink-0"></i>
+        <span class="sidebar-text text-sm font-semibold">settings</span>
+      </button>
+
+    </nav>
+
+    <button class="sidebar-item mt-auto">
+      <i data-lucide="log-out" class="w-5 h-5 shrink-0"></i>
+      <span class="sidebar-text text-sm font-semibold">Logout </span>
+    </button>
+  </aside>
+
+  <!-- MAIN -->
+  <main class="min-w-0">
+
+    <!-- TOPBAR -->
+    <header class="topbar h-auto min-h-[76px] bg-white border-b border-[#e8ebf0] px-6 py-4 flex items-center gap-4">
+
+      <div class="search-box relative w-full max-w-[420px]">
+        <i data-lucide="search" class="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-[#8f98a8]"></i>
+        <input
+          id="searchInput"
+          type="text"
+          placeholder="Search..."
+          class="w-full h-11 pl-11 pr-4 rounded-xl border border-[#e4e8ee] bg-[#f9fafb] outline-none text-sm focus:border-[#315efb]"
+        >
+      </div>
+
+      <div class="ml-auto flex items-center gap-3">
+        <button class="w-11 h-11 rounded-xl border border-[#e4e8ee] grid place-items-center text-[#667085] relative">
+          <i data-lucide="bell" class="w-5 h-5"></i>
+          <span class="absolute top-2 right-2 w-2 h-2 rounded-full bg-red-500"></span>
+        </button>
+
+        <div class="w-px h-9 bg-[#e6e9ee]"></div>
+
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-full bg-[#dfe7ff] text-[#315efb] grid place-items-center font-bold">
+            AP
+          </div>
+          <div class="profile-text">
+            <p class="font-semibold text-sm">Augusta Ryan</p>
+            <p class="text-xs text-[#8c95a5]">Director</p>
+          </div>
+          <i data-lucide="chevron-down" class="profile-text w-4 h-4 text-[#8c95a5]"></i>
+        </div>
+      </div>
+
+    </header>
+
+
+    <!-- PAGE CONTENT -->
+    <div class="p-6">
+
+      <!-- TITLE -->
+      <section class="flex flex-wrap items-center justify-between gap-4 mb-6">
+        <div>
+          <p class="text-sm text-[#8c95a5] mb-1"></p>
+          <h2 id="pageTitle" class="text-2xl font-bold">Reporting</h2>
+          <p class="text-sm text-[#8c95a5] mt-1">All projects is current month</p>
+        </div>
+
+          <button id="newProductButton" class="h-11 px-4 rounded-xl bg-[#315efb] text-white text-sm font-semibold flex items-center gap-2 shadow-[0_8px_20px_rgba(49,94,251,.25)]">
+            <i data-lucide="plus" class="w-4 h-4"></i>
+            +
+          </button>
+        </div>
+      </section>
+
+
+      <!-- SUMMARY -->
+      <section class="summary-grid grid grid-cols-4 gap-4 mb-6">
+
+        <article class="stat-card">
+          <div class="flex items-start justify-between">
+            <span class="stat-icon bg-[#FFC0CB] text-[#315efb]">
+              <i data-lucide="boxes" class="w-5 h-5"></i>
+            </span>
+  
+          </div>
+
+          <div class="mt-4">
+            </p class="text-sm text-[#8c95a5]">App Development</p>
+            <div class="flex items-end gap-2 mt-1">
+              <strong class="text-3xl leading-none"></strong>
+              <span class="text-xs text-[#9aa2b1] mb-1">Marketing Team</span> 
+              <p class="text-xs text-[#9aa2b1] mb-1">1 Weeks left</p>
+            </div>
+          </div>
+        </article>
+
+        <article class="stat-card">
+          <div class="flex items-start justify-between">
+            <span class="stat-icon bg-[#4CBB17] text-[#1aa05e]">
+              <i data-lucide="badge-check" class="w-5 h-5"></i>
+            </span>
+           
+          </div>
+
+          <div class="mt-4">
+            </p class="text-sm text-[#8c95a5]">Web Design</p>
+            <div class="flex items-end gap-2 mt-1">
+              <strong class="text-3xl leading-none"></strong>
+              <span class="text-xs text-[#9aa2b1] mb-1">Core UI Team</span>
+              <span class="text-xs text-[#9aa2b1] mb-1">3 Weeks Left</span>
+            </div>
+          </div>
+        </article>
+
+        <article class="stat-card">
+          <div class="flex items-start justify-between">
+            <span class="stat-icon bg-[#0077FF] text-[#d48713]">
+              <i data-lucide="triangle-alert" class="w-5 h-5"></i>
+            </span>
+       
+          </div>
+
+          <div class="mt-4">
+            </p class="text-sm text-[#8c95a5]">Landing Page</p>
+            <div class="flex items-end gap-2 mt-1">
+           
+              <span class="text-xs text-[#9aa2b1] mb-1">Marketing Team</span>
+
+              <span class="text-xs text-[#9aa2b1] mb-1">2 Days Left</span>
+            </div>
+          </div>
+        </article>
+
+        <article class="stat-card">
+          <div class="flex items-start justify-between">
+            <span class="stat-icon bg-[#ff8000] text-[#df4759]">
+              <i data-lucide="circle-x" class="w-5 h-5"></i>
+            </span>
+          
+          </div>
+
+          <div class="mt-4">
+            </p class="text-sm text-[#8c95a5]">Business Compare</p>
+            <div class="flex items-end gap-2 mt-1">
+              <span class="text-xs text-[#9aa2b1] mb-1">Marketing Team </span>
+              <span class="text-xs text-[#9aa2b1] mb-1">1 Month Left</span>
+            </div>
+          </div>
+        </article>
+
+        <article class="stat-card">
+          <div class="flex items-start justify-between">
+            <span class="stat-icon bg-[#9D00FF] text-[#df4759]">
+              <i data-lucide="circle-x" class="w-5 h-5"></i>
+            </span>
+          
+          </div>
+
+          <div class="mt-4">
+            </p class="text-sm text-[#8c95a5]"> Comerce Checkout</p>
+            <div class="flex items-end gap-2 mt-1">
+              <span class="text-xs text-[#9aa2b1] mb-1">Order Process Team </span>
+              <span class="text-xs text-[#9aa2b1] mb-1">3 Weeks Left</span>
+            </div>
+          </div>
+        </article>
+
+        <article class="stat-card">
+          <div class="flex items-start justify-between">
+            <span class="stat-icon bg-[#ff8000] text-[#df4759]">
+              <i data-lucide="circle-x" class="w-5 h-5"></i>
+            </span>
+          
+          </div>
+
+          <div class="mt-4">
+            </p class="text-sm text-[#8c95a5]">Data Staging</p>
+            <div class="flex items-end gap-2 mt-1">
+              <span class="text-xs text-[#9aa2b1] mb-1">Core Data Team </span>
+              <span class="text-xs text-[#9aa2b1] mb-1">2 Month Left</span>
+            </div>
+          </div>
+        </article>
+
+        <article class="stat-card">
+          <div class="flex items-start justify-between">
+            <span class="stat-icon bg-[#87CEEB] text-[#df4759]">
+              <i data-lucide="circle-x" class="w-5 h-5"></i>
+            </span>
+          
+          </div>
+
+          <div class="mt-4">
+            </p class="text-sm text-[#8c95a5]">Campaing Store</p>
+            <div class="flex items-end gap-2 mt-1">
+              <span class="text-xs text-[#9aa2b1] mb-1">Internal Comunication </span>
+              <span class="text-xs text-[#9aa2b1] mb-1">11 Days Left</span>
+            </div>
+          </div>
+        </article>
+
+        <article class="stat-card">
+          <div class="flex items-start justify-between">
+            <span class="stat-icon bg-[#EB9AC0] text-[#df4759]">
+              <i data-lucide="circle-x" class="w-5 h-5"></i>
+            </span>
+          
+          </div>
+
+          <div class="mt-4">
+            </p class="text-sm text-[#8c95a5]">Acqusition Mitra</p>
+            <div class="flex items-end gap-2 mt-1">
+              <span class="text-xs text-[#9aa2b1] mb-1">Merchant team </span>
+              <span class="text-xs text-[#9aa2b1] mb-1">1 Weeks Left</span>
+            </div>
+          </div>
+        </article>
+
+      </section>
+
+
